@@ -1,0 +1,29 @@
+Filout
+fdmnes
+
+Edge
+K
+
+Range                 !Energy range of calculation(eV)
+-5     0.25 10.0    0.5 20.0     1.0 50.0   ! first energy, step, intermediary energy, step ..., last energy
+
+Radius                                        ! Radius of the cluster where final state calculation is performed
+6                                  ! For a good calculation, this radius must be increased up to 6 or 7
+Absorber
+1
+
+
+Molecule
+1  1   1   90  90  90
+24   0.0   0.0   0.0
+17   -1.7444955110499993   -1.3172332277021033   -0.9482041290530625
+17   1.7444955110500002   -1.3172332277021033   -0.9482041290530625
+17   -1.7444955110499993   1.317233227702106   0.9482041290530638
+17   1.7444955110500002   1.317233227702106   0.9482041290530638
+17   0.0   1.7654272089478962   -2.5166693262304767
+17   0.0   -1.7654273014277067   2.5166694232469373
+
+
+Convolution
+
+End
