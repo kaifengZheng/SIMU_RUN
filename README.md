@@ -8,7 +8,7 @@ When use this package, please do the following check before submit your job
   * input(contains cif files or inp files)
   * fdmnes.inp(input files are cif files only)
   * run_bash.sh
-  * start_bash.sh
+  * start_bash.sh<br>
 **TODO LIST**
 [] Check the fdmnes.inp file (edge, absorber...)
 [] Check the main_cif.py or main_nocif.py
