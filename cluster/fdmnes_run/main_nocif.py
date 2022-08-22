@@ -65,7 +65,7 @@ def fdmnes_calculator_mpi(js,ncores,host_ind):
     try:
         fdmnes_scratch_path = js['fdmnes_scratch_path']
     except:
-        fdmnes_scratch_path = '/gpfs/scratch/kaifzheng/fdmnes/calculation'
+        fdmnes_scratch_path = '/gpfs/scratch/user/fdmnes/calculation'
         
     # try:
     #     mpirun_cmd = js['mpirun_cmd']
@@ -75,7 +75,7 @@ def fdmnes_calculator_mpi(js,ncores,host_ind):
     try:
         exe_path = js['exe_path']
     except:
-        exe_path = '/gpfs/home/kaifzheng/software/parallel_fdmnes'
+        exe_path = '/gpfs/home/user/software/parallel_fdmnes'
 
     try:
         cleanup = js['cleanup']
@@ -282,7 +282,7 @@ def fdmnes_calculator_mpi(js,ncores,host_ind):
         
 
         
-path='/gpfs/home/kaifzheng/FDMNES_cal/shape_proj/test_1_100_oblate/'
+path='/gpfs/home/user/FDMNES_cal/shape_proj/test_1_100_oblate/'
 os.chdir(path)
 
 input_files=glob.glob("input/*.inp")
