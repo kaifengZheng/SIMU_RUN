@@ -9,57 +9,57 @@ When use this package, please do the following check before submit your job
   * fdmnes.inp(input files are cif files only)
   * run_bash.sh
   * start_bash.sh<br>
-**TODO LIST**
-[] Check the fdmnes.inp file (edge, absorber...)
-[] Check the main_cif.py or main_nocif.py
+* **TODO LIST**
+- [ ] Check the fdmnes.inp file (edge, absorber...)
+- [ ] Check the main_cif.py or main_nocif.py
 * **main_cif.py(main_nocif.py)**
   * line 61-64(line 65-68) change the dir to the workspace to preform all the simulations in. It needs enough big for all the calculation.
-```python
-    try:
-        fdmnes_scratch_path = js['fdmnes_scratch_path']
-    except:
-        fdmnes_scratch_path = '/gpfs/scratch/user/fdmnes/calculation'
-```
+    ```python
+        try:
+            fdmnes_scratch_path = js['fdmnes_scratch_path']
+        except:
+            fdmnes_scratch_path = '/gpfs/scratch/user/fdmnes/calculation'
+    ```
   * line 71-74(line 75-78) change the dir to the place stored fdmnes executable files
-```python
-    try:
-        exe_path = js['exe_path']
-    except:
-        exe_path = '/gpfs/home/user/software/parallel_fdmnes'
-```
+    ```python
+        try:
+            exe_path = js['exe_path']
+        except:
+            exe_path = '/gpfs/home/user/software/parallel_fdmnes'
+    ```
   * line 132(line 136) Running FDMNES using 4 cores for MUMPS calculation, user can change this value, but the total number of cpus should be the multiplier of this number. 
-```python
- _ = subprocess.run(['HOST_NUM_FOR_MUMPS=4  bash %s/%s -np %d --hostfile %s --host %s >> fdmnes.out ' %(exe_path,e,ncores,'hostfile',host)],shell=True)
-```
+    ```python
+     _ = subprocess.run(['HOST_NUM_FOR_MUMPS=4  bash %s/%s -np %d --hostfile %s --host %s >> fdmnes.out ' %(exe_path,e,ncores,'hostfile',host)],shell=True)
+    ```
   * line 283(line 285) The dir user stores stuff in
-```python
-path='/gpfs/home/user/FDMNES_cal/Fe_proj/'
-```
-[] check run_bash.sh
+    ```python
+    path='/gpfs/home/user/FDMNES_cal/Fe_proj/'
+    ```
+- [ ] check run_bash.sh
 * **run_bash.sh**
   * line 1-8 configuration
-```bash
-#!/usr/bin/env bash
-#SBATCH --nodes=1
-#SBATCH --time=167:59:59
-#SBATCH --partition=extended-96core
-#SBATCH --output=array_test.%N_%a.log
-#SBATCH --job-name=Athena
-#SBATCH --mail-user=<user email>
-#SBATCH --mail-type=ALL
-```
+    ```bash
+    #!/usr/bin/env bash
+    #SBATCH --nodes=1
+    #SBATCH --time=167:59:59
+    #SBATCH --partition=extended-96core
+    #SBATCH --output=array_test.%N_%a.log
+    #SBATCH --job-name=Athena
+    #SBATCH --mail-user=<user email>
+    #SBATCH --mail-type=ALL
+    ```
   * line 10-11 module
-```bash
-module load slurm
-module load  python/3.9.7
-```
+    ```bash
+    module load slurm
+    module load  python/3.9.7
+    ```
   * line 17-19 how to specify cpus for several jobs after cpu allocation. The total number of cpus should smaller than the total cpus allocated.
-```bash
-NUM_NODES=1
-CPU_PER_TASK=12
-CPU_PER_PARTITION=96
-```
-[] check start_bash.sh
+    ```bash
+    NUM_NODES=1
+    CPU_PER_TASK=12
+    CPU_PER_PARTITION=96
+    ```
+- [ ] check start_bash.sh
 * **start_bash.sh**
    * check the dirs
 
