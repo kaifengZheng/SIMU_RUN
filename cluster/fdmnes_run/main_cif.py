@@ -254,7 +254,10 @@ def fdmnes_calculator_mpi(js,ncores,host_ind):
 
 
     except Exception as exc:
-        print('something is wrong')
+        print('something is wrong\n')
+        with open("fdmnes_error.txt") as f:
+             error=f.realines()
+        print(error)
         print(exc)
         
         
@@ -277,7 +280,7 @@ def fdmnes_calculator_mpi(js,ncores,host_ind):
         
 import glob
         
-path='/gpfs/home/kaifzheng/FDMNES_cal/KMgCl3/'
+path='/gpfs/home/kaifzheng/FDMNES_cal/Fe_proj/'
 #cif_files=glob.glob(path+"scaled_structures/*.cif")
 
 os.chdir(path)
@@ -302,7 +305,7 @@ js_out =fdmnes_calculator_mpi(js_in,ncores,host_ind)
 
 
 os.chdir(path)
-pathlen = len(path)
+pathlen = 6
 
 with open(path+'js/js_'+cif_files[ind][pathlen:-4]+'.json', 'w') as f:
     json.dump(js_out, f)

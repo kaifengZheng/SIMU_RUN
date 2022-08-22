@@ -1,0 +1,24 @@
+Filout
+fdmnes
+
+Edge
+K
+
+
+Range                                         ! Energy range of calculation (eV)
+-5    0.25 10.0    0.5 20.0     1.0 60.00   ! first energy, step, intermediary energy, step ..., last energy
+
+Radius                                        ! Radius of the cluster where final state calculation is performed
+7.0                                           ! For a good calculation, this radius must be increased up to 6 or 7 Angstroems
+
+
+Z_absorber
+26
+
+Cif_file
+structure.cif
+
+Convolution
+
+
+End

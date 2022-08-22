@@ -65,7 +65,7 @@ def fdmnes_calculator_mpi(js,ncores,host_ind):
     try:
         fdmnes_scratch_path = js['fdmnes_scratch_path']
     except:
-        fdmnes_scratch_path = './fdmnes/calculation'
+        fdmnes_scratch_path = '/gpfs/scratch/kaifzheng/fdmnes/calculation'
         
     # try:
     #     mpirun_cmd = js['mpirun_cmd']
@@ -75,7 +75,7 @@ def fdmnes_calculator_mpi(js,ncores,host_ind):
     try:
         exe_path = js['exe_path']
     except:
-        exe_path = '<exe_loc>'
+        exe_path = '/gpfs/home/kaifzheng/software/parallel_fdmnes'
 
     try:
         cleanup = js['cleanup']
@@ -282,8 +282,10 @@ def fdmnes_calculator_mpi(js,ncores,host_ind):
         
 
         
-path='./'
-input_files=glob.glob(path+"input/*.inp")
+path='/gpfs/home/kaifzheng/FDMNES_cal/shape_proj/test_1_100_oblate/'
+os.chdir(path)
+
+input_files=glob.glob("input/*.inp")
 with open(input_files[ind]) as fi:
     fdmnesinp = fi.readlines()
 with open(hostname) as fi:
@@ -294,9 +296,10 @@ print(f"Running calculation using {input_files[ind]}")
 js_out =fdmnes_calculator_mpi(js_in,ncores,host_ind)
 
 os.chdir(path)
-with open('js/js_'+input_files[ind][-23:-4]+'.json', 'w') as f:
+pathlen = 6
+with open(path+'js/js_'+input_files[ind][pathlen:-4]+'.json', 'w') as f:
     json.dump(js_out, f)
-    
+  
 
 
 
