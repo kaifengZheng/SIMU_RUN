@@ -3,12 +3,6 @@
 FDMNES, for Finite Difference Method Near Edge Strucuture uses DFT to calculate K edge and L<sub>23</sub> edge XANES of all elements. The Project link: https://fdmnes.neel.cnrs.fr/<br><br>
 This folder is for calculating mulptiple FDMNES calculations. In this package, there are two mode. One mode is for calculation of crystalized materials, which need cif input files. The second mode is for clusters or molecules, which don't have periodic boundary condition. The input files are multiple fdmnes.inps.<br><br>
 When use this package, please do the following check before submit your job
-* files needed for calculation:
-  * main_cif.py(main_nocif.py)
-  * input(contains cif files or inp files)
-  * fdmnes.inp(input files are cif files only)
-  * run_bash.sh
-  * start_bash.sh
 **TODO LIST**
 [] Check the fdmnes.inp file (edge, absorber...)
 [] Check the main_cif.py or main_nocif.py
@@ -35,7 +29,6 @@ When use this package, please do the following check before submit your job
 ```python
 path='/gpfs/home/user/FDMNES_cal/Fe_proj/'
 ```
-[] check run_bash.sh
 * **run_bash.sh**
   * line 1-8 configuration
 ```bash
@@ -59,7 +52,5 @@ NUM_NODES=1
 CPU_PER_TASK=12
 CPU_PER_PARTITION=96
 ```
-[] check start_bash.sh
 * **start_bash.sh**
    * check the dirs
-
