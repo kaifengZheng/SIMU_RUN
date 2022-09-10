@@ -362,10 +362,12 @@ e_int = np.arange(e_lower, e_upper, 0.1)
 # interpolate xmus
 xmus_calculated_int = dict()
 xmus_calculated_int["E"]=e_int
-for i in xmus_calculated:
-    f = InterpolatedUnivariateSpline(i[0],i[1])
-    i_int = f(e_int)
-    xmus_calculated_int[f"site_{atoms_calculated[i][2]}_mu"]=i_int
+j=0
+for d in xmus_calculated:
+    f = InterpolatedUnivariateSpline(d[0],d[1])
+    d_int = f(e_int)
+    xmus_calculated_int[f"site_{atoms_calculated[j][2]}_mu"]=d_int
+    j=j+1
     
    
 # weight-averaged total XAS
