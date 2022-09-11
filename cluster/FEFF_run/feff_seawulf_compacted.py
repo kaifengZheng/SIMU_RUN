@@ -368,7 +368,7 @@ j=0
 for d in xmus_calculated:
     f = InterpolatedUnivariateSpline(d[0],d[1])
     d_int = f(e_int)
-    xmus_calculated_int[f"site_{atoms_calculated[j][2]}_mu"]=d_int.tolist()
+    xmus_calculated_int[f"site_{atoms_calculated[j][2]}_mu({occupancy[j]})"]=d_int.tolist()
     j=j+1
     
    
