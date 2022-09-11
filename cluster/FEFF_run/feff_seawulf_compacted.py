@@ -351,23 +351,28 @@ for i,(k,v) in enumerate(unique_index.items()):
 # find boundaries
 e_lowers =[]
 e_uppers =[]
-for i in xmus_calculated:
-    e_lowers.append(i[0][0])
-    e_uppers.append(i[0][-1]) 
-e_lower = max(e_lowers)
-e_upper = min(e_uppers)
-e_int = np.arange(e_lower, e_upper, 0.1)  
+if not os.path.exists("E_grid.int"):
+    for i in xmus_calculated:
+        e_lowers.append(i[0][0])
+        e_uppers.append(i[0][-1]) 
+    e_lower = max(e_lowers)
+    e_upper = min(e_uppers)
+    E_grids = np.arange(e_lower-3, e_upper-3, 0.1)
+    np.savetxt('E_grid.int', E_grids, fmt='%.8f')
+else:
+    E_grids=np.loadtxt('E_grid.int')  
 
 
 # interpolate xmus
 #to write in json the value in list need to be converted to list
 #to write in parquet the value in list need to be converted to dict
+#delete 10 points at the end
 xmus_calculated_int = dict()
-xmus_calculated_int["E"]=e_int.tolist()
+xmus_calculated_int["E"]=E_grids.tolist()
 j=0
 for d in xmus_calculated:
     f = InterpolatedUnivariateSpline(d[0],d[1])
-    d_int = f(e_int)
+    d_int = f(E_grids)
     xmus_calculated_int[f"site_{atoms_calculated[j][2]}_mu({occupancy[j]})"]=d_int.tolist()
     j=j+1
     
@@ -375,7 +380,7 @@ for d in xmus_calculated:
 # weight-averaged total XAS
 xmu_total = 0
 for i in range(len(occupancy)):
-    xmu_total = xmu_total + np.array(xmus_calculated_int[f"site_{atoms_calculated[i][2]}_mu"])*occupancy[i] 
+    xmu_total = xmu_total + np.array(xmus_calculated_int[f"site_{atoms_calculated[i][2]}_mu({occupancy[i]})"])*occupancy[i] 
 xmu_total = xmu_total/sum(occupancy)
 
 xmus_calculated_int["total_mu"]=xmu_total.tolist()    
@@ -392,7 +397,7 @@ custom_meta_key=f"{filename[ind][6:-4]}"
 site_spec=json.dumps(xmus_calculated_int)
 if not os.path.exists("spectrum.parquet"):
     total_spectrum=dict()
-    total_spectrum["E"]=e_int
+    total_spectrum["E"]=E_grids
     total_spectrum[f"{filename[ind][6:-4]}_total_mu"]=xmu_total
     total_spectrum=pd.DataFrame(total_spectrum)
     table = pa.Table.from_pandas(total_spectrum)
@@ -407,7 +412,7 @@ if not os.path.exists("spectrum.parquet"):
 else:
     restored_table = pq.read_table('spectrum.parquet')
     restored_df = restored_table.to_pandas()
-    print(xmu_total[:len(restored_df)])
+    #print(xmu_total[:len(restored_df)])
     restored_table=restored_table.append_column(f"{filename[ind][6:-4]}_total_mu",pa.array(xmu_total[:len(restored_df)]))
     
     #table = pa.Table.from_pandas(restored_df)
