@@ -360,50 +360,41 @@ e_int = np.arange(e_lower, e_upper, 0.1)
 
 
 # interpolate xmus
+#to write in json the value in list need to be converted to list
+#to write in parquet the value in list need to be converted to dict
 xmus_calculated_int = dict()
-xmus_calculated_int["E"]=e_int
+xmus_calculated_int["E"]=e_int.tolist()
 j=0
 for d in xmus_calculated:
     f = InterpolatedUnivariateSpline(d[0],d[1])
     d_int = f(e_int)
-    xmus_calculated_int[f"site_{atoms_calculated[j][2]}_mu"]=d_int
+    xmus_calculated_int[f"site_{atoms_calculated[j][2]}_mu"]=d_int.tolist()
     j=j+1
     
    
 # weight-averaged total XAS
 xmu_total = 0
 for i in range(len(occupancy)):
-    xmu_total = xmu_total + xmus_calculated_int[f"site_{atoms_calculated[i][2]}_mu"]*occupancy[i] 
+    xmu_total = xmu_total + np.array(xmus_calculated_int[f"site_{atoms_calculated[i][2]}_mu"])*occupancy[i] 
 xmu_total = xmu_total/sum(occupancy)
 
-xmus_calculated_int["total_mu"]=xmu_total    
-spectra=pd.DataFrame(xmus_calculated_int)
+xmus_calculated_int["total_mu"]=xmu_total.tolist()    
+
 
 
 
 
 
 #============================================================================================================
-print(spectra.describe())
 
-# os.chdir(f'{filename[ind][6:-4]}')
-
-
-# folders = [f for f in os.listdir() if os.path.isdir(f)]
-# print(folders)
-# os.chdir('..')
-#os.makedirs(f'feff_{ind}',exist_ok=True)
- 
-#index_atom=list(unique_index.keys())   
-
-
-#spectra.to_json(f'{filename[ind][6:-4]}.json')
 custom_meta_key=f"{filename[ind][6:-4]}"
-site_spec=json.dumps(spectra)
+#print(xmus_calculated_int)
+site_spec=json.dumps(xmus_calculated_int)
 if not os.path.exists("spectrum.parquet"):
     total_spectrum=dict()
     total_spectrum["E"]=e_int
     total_spectrum[f"{filename[ind][6:-4]}_total_mu"]=xmu_total
+    total_spectrum=pd.DataFrame(total_spectrum)
     table = pa.Table.from_pandas(total_spectrum)
     
     existing_meta = table.schema.metadata
@@ -416,7 +407,10 @@ if not os.path.exists("spectrum.parquet"):
 else:
     restored_table = pq.read_table('spectrum.parquet')
     restored_df = restored_table.to_pandas()
-    restored_df[f'{filename[ind][6:-4]}_total_mu']=xmu_total
+    print(xmu_total[:len(restored_df)])
+    restored_table=restored_table.append_column(f"{filename[ind][6:-4]}_total_mu",pa.array(xmu_total[:len(restored_df)]))
+    
+    #table = pa.Table.from_pandas(restored_df)
     existing_meta =  restored_table.schema.metadata
     combined_meta = {
         custom_meta_key.encode() :site_spec.encode(),
